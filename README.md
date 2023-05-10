@@ -14,7 +14,7 @@ Clone the repository
 
 Install full dependencies: ```python3 -m pip install -r package.pip```
 
-Rename "src/.env.sample" to "src/.env"
+Rename "src/env.json.sample" to "src/env.json"
 Set "BOT-TOKEN" with your own Token
 
 run the app
