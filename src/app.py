@@ -4,6 +4,7 @@ import json
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
+import math
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -48,6 +49,18 @@ async def comandos(update: Update, context: ContextTypes.DEFAULT_TYPE):
 /coger: recoges el objeto indicado
 """)
 
+async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) != 2:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Introduce el comando con el siguiente formato /pitagoras 'valorA' 'valorB'")
+    else:
+        if not (context.args[0]).isnumeric():
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorA' ha de ser un numero")
+        else:
+            if not (context.args[1]).isnumeric():
+                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorB' ha de ser un numero")
+            else:
+                hipotenusa=math.sqrt((float(context.args[0])*float(context.args[0]))+(float(context.args[1])*float(context.args[1]) ))
+                await context.bot.send_message(chat_id=update.effective_chat.id, text="La hipotenusa es de "+str(hipotenusa))
 
 if __name__ == '__main__':
     #asyncio.run(main(loadconfig()))
@@ -73,5 +86,8 @@ if __name__ == '__main__':
 
     comandos_handler = CommandHandler('comandos', comandos)
     application.add_handler(comandos_handler)
+
+    pitagoras_handler = CommandHandler('pitagoras', pitagoras)
+    application.add_handler(pitagoras_handler)
 
     application.run_polling()
