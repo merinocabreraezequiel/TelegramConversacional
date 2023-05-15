@@ -51,16 +51,27 @@ async def comandos(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(context.args) != 2:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Introduce el comando con el siguiente formato /pitagoras 'valorA' 'valorB'")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Introduce el comando con el siguiente formato /pitagoras 'valorA' 'valorB', los decimales son con '.'")
     else:
         if not (context.args[0]).isnumeric():
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorA' ha de ser un numero")
+            try:
+                argA = float(context.args[0])
+            except ValueError:
+                argA = None
+                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorA' ha de ser un numero o un float")
         else:
-            if not (context.args[1]).isnumeric():
-                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorB' ha de ser un numero")
-            else:
-                hipotenusa=math.sqrt((float(context.args[0])*float(context.args[0]))+(float(context.args[1])*float(context.args[1]) ))
-                await context.bot.send_message(chat_id=update.effective_chat.id, text="La hipotenusa es de "+str(hipotenusa))
+            argA = float(context.args[0])
+        if not (context.args[1]).isnumeric():
+            try:
+                argB = float(context.args[1])
+            except ValueError:
+                argB = None
+                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorB' ha de ser un numero o un float")
+        else:
+            argB = float(context.args[1])
+        if not (argA is None) and not (argB is None):
+            hipotenusa=math.sqrt((float(context.args[0])*float(context.args[0]))+(float(context.args[1])*float(context.args[1]) ))
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="La hipotenusa es de "+str(hipotenusa))
 
 
 async def textProcesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
