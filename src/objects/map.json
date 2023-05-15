@@ -1,0 +1,38 @@
+{
+    "room":{
+        "n":{
+            "View":"Pared",
+            "Desc": "Hay una pared mal empapelada.",
+            "Acctions":{
+                "Def": "No puedes hacerlo."
+            }
+        },
+        "s": {
+            "View": "Entrada",
+            "Desc": "Es la puerta por la que has entrado.",
+            "Actions": {
+                "Abrir": "No se puede abrir la puerta.",
+                "Cerrar": "La puerta ya está cerrada.",
+                "Def": "No pudes hacerlo"
+            }
+        },
+        "e":{
+            "View": "Ventana",
+            "Desc": "La ventana está abierta, ves el jardín trasero, debería recortarse el cesped.",
+            "Actions": {
+                "Abrir": "La ventana no se abre",
+                "Cerrar": "iLa ventana ya está cerrada",
+                "Def": "No pudes hacer eso."
+            }
+        },
+        "o":{
+            "View": "Puerta",
+            "Desc": "Una puerta normal, sin pomo.",
+            "Actions":{
+                "Abrir": "No se abre.",
+                "Cerrar": "Ya está cerrada.",
+                "Def": "Eso no es posible."
+            }
+        }
+    }
+}
