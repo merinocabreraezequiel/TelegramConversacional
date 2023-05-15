@@ -3,7 +3,7 @@ import telegram
 import json
 import logging
 from telegram import Update
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters, Updater
 import math
 
 logging.basicConfig(
@@ -62,6 +62,10 @@ async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 hipotenusa=math.sqrt((float(context.args[0])*float(context.args[0]))+(float(context.args[1])*float(context.args[1]) ))
                 await context.bot.send_message(chat_id=update.effective_chat.id, text="La hipotenusa es de "+str(hipotenusa))
 
+
+async def textProcesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+
 if __name__ == '__main__':
     #asyncio.run(main(loadconfig()))
     conf = loadconfig()
@@ -89,5 +93,8 @@ if __name__ == '__main__':
 
     pitagoras_handler = CommandHandler('pitagoras', pitagoras)
     application.add_handler(pitagoras_handler)
+
+    genText_handler = MessageHandler(filters.Text(), textProcesor)
+    application.add_handler(genText_handler)
 
     application.run_polling()
