@@ -5,6 +5,7 @@ import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters, Updater
 import math
+from unidecode import unidecode
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -50,32 +51,64 @@ async def comandos(update: Update, context: ContextTypes.DEFAULT_TYPE):
 """)
 
 async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if len(context.args) != 2:
+    if len(context.args) != 3:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Introduce el comando con el siguiente formato /pitagoras 'valorA' 'valorB', los decimales son con '.'")
     else:
         if not (context.args[0]).isnumeric():
             try:
                 argA = float(context.args[0])
             except ValueError:
-                argA = None
-                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorA' ha de ser un numero o un float")
+                if context.args[0] == "x":
+                    argA = context.args[0]
+                else:
+                    argA = None
+                    await context.bot.send_message(chat_id=update.effective_chat.id, text="La Cateto A ha de ser un numero o un float")
         else:
             argA = float(context.args[0])
+
         if not (context.args[1]).isnumeric():
             try:
                 argB = float(context.args[1])
             except ValueError:
-                argB = None
-                await context.bot.send_message(chat_id=update.effective_chat.id, text="La variable 'valorB' ha de ser un numero o un float")
+                if context.args[1] == "x":
+                    argB = context.args[1]
+                else:
+                    argB = None
+                    await context.bot.send_message(chat_id=update.effective_chat.id, text="La Cateto B ha de ser un numero o un float")
         else:
             argB = float(context.args[1])
-        if not (argA is None) and not (argB is None):
-            hipotenusa=math.sqrt((float(context.args[0])*float(context.args[0]))+(float(context.args[1])*float(context.args[1]) ))
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="La hipotenusa es de "+str(hipotenusa))
+
+        if not (context.args[2]).isnumeric():
+            try:
+                argH = float(context.args[2])
+            except ValueError:
+                if context.args[2] == "x":
+                    argH = context.args[2]
+                else:
+                    argH = None
+                    await context.bot.send_message(chat_id=update.effective_chat.id, text="La Hipotenusa ha de ser un numero o un float")
+        else:
+            argH = float(context.args[2])
+
+        if not (argA is None) and not (argB is None) and not (argH is None):
+            if argA == "x":
+                argA = math.sqrt(argH**2 - argB**2)
+            else:
+                if argB == "x":
+                    argB = math.sqrt(argH**2 - argA**2)
+                else:
+                    argH=math.sqrt((argA**2)+(argB**2))
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="La resolución del triangulo es:\nCateto A: "+str(argA)+"\nCateto B: "+str(argB)+"\nHipotenusa: "+str(argH))
 
 
 async def textProcesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Te lo devuelvo: "+update.message.text)
+
+
+def normalize_command(command):
+    commandSplit = command.split()
+    normalized_command = unidecode(commandSplit[0])
+    return normalized_command.casefold()
 
 if __name__ == '__main__':
     #asyncio.run(main(loadconfig()))
@@ -102,7 +135,7 @@ if __name__ == '__main__':
     comandos_handler = CommandHandler('comandos', comandos)
     application.add_handler(comandos_handler)
 
-    pitagoras_handler = CommandHandler('pitagoras', pitagoras)
+    pitagoras_handler = CommandHandler(normalize_command("pitagoras"), pitagoras)
     application.add_handler(pitagoras_handler)
 
     genText_handler = MessageHandler(filters.Text(), textProcesor)
