@@ -21,10 +21,10 @@ async def main(conf):
     async with bot:
         #print(await bot.get_me())
         #print((await bot.get_updates())[0])
-        await bot.send_message(text='Hola Ruben!', chat_id=1215562747)
+        await bot.send_message(text=bot.username, chat_id=bot.id)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola, soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola "+update.effective_chat.username +", soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.")
 
 async def norte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al norte")
