@@ -1,4 +1,4 @@
-{
+﻿{
     "room":{
         "View": "Habitación",
         "Desc": "Estás es una habitación con luz.",
@@ -24,7 +24,7 @@
                 "Desc": "La ventana está abierta, ves el jardín trasero, debería recortarse el cesped.",
                 "Actions": {
                     "Abrir": "La ventana no se abre",
-                    "Cerrar": "iLa ventana ya está cerrada",
+                    "Cerrar": "La ventana ya está cerrada",
                     "Def": "No pudes hacer eso."
                 }
             },

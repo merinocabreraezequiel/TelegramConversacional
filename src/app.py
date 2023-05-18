@@ -15,14 +15,14 @@ logging.basicConfig(
 gd = None
 
 def loadconfig():
-    f = open("env.json", "r")
+    f = open("env.json", encoding='utf-8-sig')
     string_double_quotes = f.read()
     return(json.loads(string_double_quotes))
 
 def loadGD():
-    f = open("objects/map.json", "r")
+    f = open("objects/map.json", encoding='utf-8-sig')
     string_double_quotes = f.read()
-    string_double_quotes = string_double_quotes.encode('utf-8-sig')
+    print(string_double_quotes)
     return(json.loads(string_double_quotes))
 
 async def main(conf):
@@ -33,16 +33,8 @@ async def main(conf):
         await bot.send_message(text=bot.username, chat_id=bot.id)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola "+update.effective_chat.username +", soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.\n\n<b>Empieza la aventura</b>\n"+gd["room"]["View"]+"\n"+gd["room"]["Desc"],parse_mode='html')
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola "+update.effective_chat.username+", soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.\n\n<b>Empieza la aventura</b>\n"+gd["room"]["View"]+"\n"+gd["room"]["Desc"],parse_mode='html')
 
-async def norte(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al norte")
-async def sur(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al sur")
-async def este(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al este")
-async def oeste(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al oeste")
 async def coger(update: Update, context: ContextTypes.DEFAULT_TYPE):
     returntxt = ' '.join(context.args)
     await context.bot.send_message(chat_id=update.effective_chat.id, text="coges el "+returntxt)
@@ -51,11 +43,14 @@ async def imagen(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def comandos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="""/norte: te mueves al norte
-/sur: te mueves al sur
-/este: te mueves al este
-/oeste: te mueves al oeste
-/mirar: observas a tu alrededor, puedes indicar objeto
-/coger: recoges el objeto indicado
+s: te mueves al sur
+e: te mueves al este
+o: te mueves al oeste
+mirar: observas a tu alrededor, puedes indicar objeto
+coger: recoges el objeto indicado
+abrir: abres un objeto
+cerrar: cierras un objeto
+usar: usas un objeto
 """)
 
 async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -127,14 +122,6 @@ if __name__ == '__main__':
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
     
-    norte_handler = CommandHandler('norte', norte)
-    application.add_handler(norte_handler)
-    sur_handler = CommandHandler('sur', sur)
-    application.add_handler(sur_handler)
-    este_handler = CommandHandler('este', este)
-    application.add_handler(este_handler)
-    oeste_handler = CommandHandler('oeste', oeste)
-    application.add_handler(oeste_handler)
     coger_handler = CommandHandler('coger', coger)
     application.add_handler(coger_handler)
 
