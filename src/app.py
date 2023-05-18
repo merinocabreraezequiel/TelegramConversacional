@@ -12,9 +12,17 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+gd = None
+
 def loadconfig():
     f = open("env.json", "r")
     string_double_quotes = f.read()
+    return(json.loads(string_double_quotes))
+
+def loadGD():
+    f = open("objects/map.json", "r")
+    string_double_quotes = f.read()
+    string_double_quotes = string_double_quotes.encode('utf-8-sig')
     return(json.loads(string_double_quotes))
 
 async def main(conf):
@@ -25,7 +33,7 @@ async def main(conf):
         await bot.send_message(text=bot.username, chat_id=bot.id)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola "+update.effective_chat.username +", soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola "+update.effective_chat.username +", soy un bot preprandome para hacerte pasar una aventura conversacional\nEjecuta /comandos para conocer tus opciones.\n\n<b>Empieza la aventura</b>\n"+gd["room"]["View"]+"\n"+gd["room"]["Desc"],parse_mode='html')
 
 async def norte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Te mueves al norte")
@@ -113,6 +121,7 @@ def normalize_command(command):
 if __name__ == '__main__':
     #asyncio.run(main(loadconfig()))
     conf = loadconfig()
+    gd = loadGD()
     application = ApplicationBuilder().token(str(conf['BOT_TOKEN'])).build()
     
     start_handler = CommandHandler('start', start)
