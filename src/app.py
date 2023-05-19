@@ -6,6 +6,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters, Updater
 import math
 from unidecode import unidecode
+import random
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -42,7 +43,7 @@ async def imagen(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(chat_id=update.effective_chat.id, photo=r'.\\img\\01.jpg')
 
 async def comandos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="""/norte: te mueves al norte
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="""/n: te mueves al norte
 s: te mueves al sur
 e: te mueves al este
 o: te mueves al oeste
@@ -103,6 +104,29 @@ async def pitagoras(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     argH=math.sqrt((argA**2)+(argB**2))
             await context.bot.send_message(chat_id=update.effective_chat.id, text="La resolución del triangulo es:\nCateto A: "+str(argA)+"\nCateto B: "+str(argB)+"\nHipotenusa: "+str(argH))
 
+async def bola(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) < 1:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Me tienes que hacer alguna pregunta")
+    else:
+        r = random.randint(1,8)
+        if r == 1:
+           resp = "Sí, definitivamente sí."
+        elif r == 2:
+           resp = "Absolutamente."
+        elif r == 3:
+            resp = "Sin duda."
+        elif r == 4:
+            resp = "La respuesta es complicada."
+        elif r == 5:
+            resp = "Preguntame otra vez más tarde."
+        elif r == 6:
+            resp = "Mejor no te lo digo."
+        elif r == 7:
+            resp = "Mis fuentes dicen que no."
+        else:
+            resp = "Lo dudo mucho."
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="A tu pregunta te puedo decir que:\n"+resp)
+
 
 async def textProcesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Te lo devuelvo: "+update.message.text)
@@ -133,6 +157,9 @@ if __name__ == '__main__':
 
     pitagoras_handler = CommandHandler(normalize_command("pitagoras"), pitagoras)
     application.add_handler(pitagoras_handler)
+
+    bola_handler = CommandHandler('bola8', bola)
+    application.add_handler(bola_handler)
 
     genText_handler = MessageHandler(filters.Text(), textProcesor)
     application.add_handler(genText_handler)
