@@ -108,6 +108,7 @@ async def bola(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(context.args) < 1:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Me tienes que hacer alguna pregunta")
     else:
+        await context.bot.send_animation(chat_id=update.effective_chat.id, animation=r'.\\img\\bola8p.gif')
         r = random.randint(1,8)
         if r == 1:
            resp = "Sí, definitivamente sí."
